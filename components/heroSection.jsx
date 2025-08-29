@@ -18,7 +18,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="pb-20 px-4">
+    <div className="pt-20 pb-20 px-4">
       <div className="container mx-auto text-center">
         {/* Hero Title */}
         <h1
