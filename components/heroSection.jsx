@@ -49,7 +49,7 @@ export default function Hero() {
           className="w-full flex justify-center"
         >
           <Image
-            src="/banner.jpeg"
+            src="/banner.jpg"
             alt="Hero"
             width={800}
             height={600}
@@ -59,6 +59,7 @@ export default function Hero() {
                 : 'rotateX(15deg) scale(1)',
               transition: 'transform 0.5s ease-out',
               willChange: 'transform',
+              borderRadius: '20px',
             }}
           />
         </div>
