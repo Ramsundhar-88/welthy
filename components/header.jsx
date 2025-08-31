@@ -47,17 +47,19 @@ const Header = async() => {
                 avatarBox: 'w-10 h-10',
               }}}/>
             </div>
-
-
-
-
           </SignedIn>
+        <SignedOut>
+          <Link href="/sign-in">
+            <Button variant="outline" className="mr-4  cursor-pointer">Login</Button>
+          </Link>
+        </SignedOut>
+                <SignedOut>
+          <Link href="/sign-up">
+            <Button variant="secondary" className="mr-4 cursor-pointer">Sign-up</Button>
+          </Link>
+        </SignedOut>
 
-          <SignedOut>
-            <SignInButton forceRedirectUrl='/dashboard'>
-              <Button variant="outline" className="mr-4">Login</Button>
-            </SignInButton>
-          </SignedOut>
+
         </div>
       </nav>
     </div>
