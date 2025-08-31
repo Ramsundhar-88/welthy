@@ -18,18 +18,20 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="pt-20 pb-20 px-4">
+    <div className="pt-20 pb-10 px-4 ">
       <div className="container mx-auto text-center">
         {/* Hero Title */}
         <h1
           className="text-5xl md:text-8xl lg:text-[105px] pb-6 font-extrabold tracking-tighter
-                     bg-gradient-to-r from-purple-400 via-pink-500 to-red-500
-                     bg-clip-text text-transparent inline-block"
+                     bg-gradient-to-b from-blue-400 
+                     bg-clip-text text-transparent inline-block pt-4 mt-4 "
         >
-          Manage Your Finances <br /> with Intelligence
+          Manage Your  <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent animate-pulse">
+          Finances
+    </span>   <br />  with Intelligence
         </h1>
 
-        <p className="mt-4 mb-8 text-lg md:text-xl">
+        <p className="mt-8 mb-8 text-lg md:text-xl">
           An AI-powered financial management platform that helps you track, analyze, and optimize your spending habits.
         </p>
 
@@ -44,7 +46,7 @@ export default function Hero() {
         </div>
 
         {/* Hero Image with 3D scroll effect */}
-        <div
+        {/* <div
           style={{ perspective: '1000px' }}
           className="w-full flex justify-center"
         >
@@ -62,7 +64,7 @@ export default function Hero() {
               borderRadius: '20px',
             }}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
