@@ -3,12 +3,18 @@
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { Select } from "react-day-picker"
 
 const serializeTranscation=(obj)=>{
     const serailized = {...obj}
 
     if(obj.balance){
         serailized.balance=obj.balance.toNumber()
+    }
+    return serailized
+
+    if(obj.amount){
+        serailized.amount=obj.amount.toNumber()
     }
     return serailized
 
@@ -82,3 +88,34 @@ export async function createAccount(data) {
 
     
 }
+
+export async function getUSerAcccounts(){
+    const{userId}=await auth()
+    if(!userId) throw new Error("Unauthorized")
+
+    const user = await db.user.findUnique({
+        where:{clerkUserId:userId}
+    })
+
+    if(!user){
+        throw new Error("User not found")
+    }
+
+    const accounts = await db.account.findMany({
+        where:{userId:user.id},
+        orderBy:{createdAt:"desc"},
+        include:{
+            _count:{
+                select:{
+                    transcations:true,
+                }
+            }
+        }
+
+    })
+
+    const serailizedAccount =serializeTranscation(accounts)
+
+    return serailizedAccount
+}
+
