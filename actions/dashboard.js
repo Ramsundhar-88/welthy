@@ -11,7 +11,7 @@ const serializeTranscation=(obj)=>{
     if(obj.balance){
         serailized.balance=obj.balance.toNumber()
     }
-    return serailized
+  
 
     if(obj.amount){
         serailized.amount=obj.amount.toNumber()
@@ -107,14 +107,14 @@ export async function getUSerAcccounts(){
         include:{
             _count:{
                 select:{
-                    transcations:true,
+                    transactions:true,
                 }
             }
         }
 
     })
 
-    const serailizedAccount =serializeTranscation(accounts)
+    const serailizedAccount =accounts.map(serializeTranscation)
 
     return serailizedAccount
 }
