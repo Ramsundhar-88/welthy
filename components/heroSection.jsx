@@ -26,7 +26,7 @@ export default function Hero() {
                      bg-gradient-to-b from-blue-400 
                      bg-clip-text text-transparent inline-block pt-4 mt-4 "
         >
-          Manage Your  <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent animate-pulse">
+          Manage Your  <span className="pr-1 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent animate-pulse">
           Finances
     </span>   <br />  with Intelligence
         </h1>
