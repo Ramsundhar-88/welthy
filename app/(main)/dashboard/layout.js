@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import DashBoard from './page'
 import {BarLoader} from "react-spinners"
+import { auth } from '@clerk/nextjs'
 
 const Dashboardlayout = () => {
   return (

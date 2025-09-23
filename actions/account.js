@@ -1,3 +1,4 @@
+"use server"
 import { db } from "@/lib/prisma"
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
@@ -9,7 +10,7 @@ const serializeTranscation=(obj)=>{
     if(obj.balance){
         serailized.balance=obj.balance.toNumber()
     }
-    return serailized
+    
 
     if(obj.amount){
         serailized.amount=obj.amount.toNumber()

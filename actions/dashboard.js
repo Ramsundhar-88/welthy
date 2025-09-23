@@ -5,13 +5,13 @@ import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { Select } from "react-day-picker"
 
-const serializeTranscation=(obj)=>{
+const serializeTransaction=(obj)=>{
     const serailized = {...obj}
 
     if(obj.balance){
         serailized.balance=obj.balance.toNumber()
     }
-    return serailized
+   
 
     if(obj.amount){
         serailized.amount=obj.amount.toNumber()
@@ -21,101 +21,120 @@ const serializeTranscation=(obj)=>{
 }
 
 
-export async function createAccount(data) {
 
-    try {
+export async function getUserAccounts() {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
-        const {userId} = await auth()
-        if(!userId) throw new Error("Unauthorized")
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+  });
 
-        
-        const user = await db.user.findUnique({
-            where: { clerkUserId: userId },
-            });
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-        if(!user){
-            throw new Error("User not found")
-        }
+  try {
+    const accounts = await db.account.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: {
+            transactions: true,
+          },
+        },
+      },
+    });
 
-        // Converting balance to float before saving
-        const balanceFloat = parseFloat(data.balance)
-        if(isNaN(balanceFloat)){
-            throw new Error("Invalid balance amount")
-        }
+    // Serialize accounts before sending to client
+    const serializedAccounts = accounts.map(serializeTransaction);
 
-        // Chcking is this first account
-        const existingAccounts = await db.account.findMany({
-            where:{userId:user.id}
-        })
-
-
-
-        // if this account should be default , unset other default accounts
-
-        const shoulBeDefault = existingAccounts.length===0 ? true:data.isDefault
-
-        if(shoulBeDefault){
-            await db.account.updateMany({
-                where :{userId:user.id,isDefault:true},
-                data:{isDefault:false}
-
-            })
-        }
-
-        const account = await db.account.create({
-            data:{
-                ...data,
-                balance:balanceFloat,
-                userId:user.id,
-                isDefault:shoulBeDefault
-
-            }
-
-        })
-
-        const serailizedAccount = serializeTranscation(account)
-
-        revalidatePath("/dashboard")
-            return {sucess:true, data:serailizedAccount}
-
-
-    } catch (error) {
-        throw new Error(error.message)
-        
-    }
-
-    
-
-    
+    return serializedAccounts;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
-export async function getUSerAcccounts(){
-    const{userId}=await auth()
-    if(!userId) throw new Error("Unauthorized")
+export async function createAccount(data) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    // Get request data for ArcJet
+    const req = await request();
+
+    // Check rate limit
+    const decision = await aj.protect(req, {
+      userId,
+      requested: 1, // Specify how many tokens to consume
+    });
+
+    if (decision.isDenied()) {
+      if (decision.reason.isRateLimit()) {
+        const { remaining, reset } = decision.reason;
+        console.error({
+          code: "RATE_LIMIT_EXCEEDED",
+          details: {
+            remaining,
+            resetInSeconds: reset,
+          },
+        });
+
+        throw new Error("Too many requests. Please try again later.");
+      }
+
+      throw new Error("Request blocked");
+    }
 
     const user = await db.user.findUnique({
-        where:{clerkUserId:userId}
-    })
+      where: { clerkUserId: userId },
+    });
 
-    if(!user){
-        throw new Error("User not found")
+    if (!user) {
+      throw new Error("User not found");
     }
 
-    const accounts = await db.account.findMany({
-        where:{userId:user.id},
-        orderBy:{createdAt:"desc"},
-        include:{
-            _count:{
-                select:{
-                    transcations:true,
-                }
-            }
-        }
+    // Convert balance to float before saving
+    const balanceFloat = parseFloat(data.balance);
+    if (isNaN(balanceFloat)) {
+      throw new Error("Invalid balance amount");
+    }
 
-    })
+    // Check if this is the user's first account
+    const existingAccounts = await db.account.findMany({
+      where: { userId: user.id },
+    });
 
-    const serailizedAccount =serializeTranscation(accounts)
+    // If it's the first account, make it default regardless of user input
+    // If not, use the user's preference
+    const shouldBeDefault =
+      existingAccounts.length === 0 ? true : data.isDefault;
 
-    return serailizedAccount
+    // If this account should be default, unset other default accounts
+    if (shouldBeDefault) {
+      await db.account.updateMany({
+        where: { userId: user.id, isDefault: true },
+        data: { isDefault: false },
+      });
+    }
+
+    // Create new account
+    const account = await db.account.create({
+      data: {
+        ...data,
+        balance: balanceFloat,
+        userId: user.id,
+        isDefault: shouldBeDefault, // Override the isDefault based on our logic
+      },
+    });
+
+    // Serialize the account before returning
+    const serializedAccount = serializeTransaction(account);
+
+    revalidatePath("/dashboard");
+    return { success: true, data: serializedAccount };
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
-
