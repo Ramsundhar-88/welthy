@@ -1,9 +1,13 @@
+import { getUserAccounts } from '@/actions/dashboard'
 import CreateAccountDrawer from '@/components/create-account-drawer'
 import { CardContent,Card} from '@/components/ui/card'
 import { Plus } from 'lucide-react'
+import AccountCard from './_components/account_card'
 import React from 'react'
 
-const DashBoard = () => {
+async function DashBoard(){
+  const accounts = await getUserAccounts()
+  console.log(accounts)
   return (
     <div className='px-5'>
 
@@ -13,49 +17,13 @@ const DashBoard = () => {
           <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
             <Plus className="h-10 w-10 mb-2"/>
             <p className='text-sm font-medium'>Add new Account</p>
-
           </CardContent>
         </Card>
-
       </CreateAccountDrawer>
+      {accounts.length>0&& accounts?.map((account)=>{
+        return <AccountCard key={account.id} account={account}/>})}
+    </div>    
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-    
   )
 }
 

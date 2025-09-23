@@ -39,17 +39,17 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cG9zc2libGUtaW1wYWxhLTIyLmNsZXJrLmFjY291bnRzLmRldiQ
-CLERK_SECRET_KEY=sk_test_UtEMjWe1CCuoUF5Vi7QNzKL5S36H0Jexdzep4ffvzu
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cG9zc2libGUtaW1wYWxhLTIyLmNsZXJrLmFjY291bnRzLmRldiQ
+    CLERK_SECRET_KEY=sk_test_UtEMjWe1CCuoUF5Vi7QNzKL5S36H0Jexdzep4ffvzu
 
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=sign-up
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL=sign-in
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL=sign-up
 
-# Connect to Supabase via connection pooling
-DATABASE_URL="postgresql://postgres.hnzpiysxgectgzbdpwnw:cCCdPHG2cHM4cqtK@aws-1-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+    # Connect to Supabase via connection pooling
+    DATABASE_URL="postgresql://postgres.hnzpiysxgectgzbdpwnw:cCCdPHG2cHM4cqtK@aws-1-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-# Direct connection to the database. Used for migrations
-DIRECT_URL="postgresql://postgres.hnzpiysxgectgzbdpwnw:cCCdPHG2cHM4cqtK@aws-1-ap-south-1.pooler.supabase.com:5432/postgres"
+    # Direct connection to the database. Used for migrations
+    DIRECT_URL="postgresql://postgres.hnzpiysxgectgzbdpwnw:cCCdPHG2cHM4cqtK@aws-1-ap-south-1.pooler.supabase.com:5432/postgres"
 
-ARCJET_KEY=ajkey_01k3r91tbyeq386rj5hv4f1zbs
+    ARCJET_KEY=ajkey_01k3r91tbyeq386rj5hv4f1zbs
 
