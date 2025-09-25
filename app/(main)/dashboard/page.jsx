@@ -7,7 +7,7 @@ import React from 'react'
 
 async function DashBoard(){
   const accounts = await getUserAccounts()
-  console.log(accounts)
+
   return (
     <div className='px-5'>
 
