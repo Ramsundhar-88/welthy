@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { format } from "date-fns"
+import { toast } from "sonner"
 import {
   Table,
   TableBody,
@@ -48,6 +49,9 @@ import {
 } from "@/components/ui/select"
 import { categoryColors } from "@/data/categories"
 import { Input } from "@/components/ui/input"
+import useFetch from "@/hooks/use-fetch"
+import { bulkDeleteTranscations } from "@/actions/account"
+import { BarLoader } from "react-spinners"
 
 const RECURRING_INTERVALS = {
   DAILY: "Daily",
@@ -68,6 +72,10 @@ const TranscationTable = ({ transactions }) => {
   const [searchTerm,setSearchTerm] = useState("")
   const [typeFilter,setTypeFilter] = useState("")
   const [recurringFilter,setRecurringFilter]=useState("")
+  const{
+    loading:deleteLoading,
+    fn:deletefn,
+    data:deleted} =useFetch(bulkDeleteTranscations)
 
 
 
@@ -147,9 +155,28 @@ if (recurringFilter) {
     )
   }
 
-  const handleBulkDelete = ()=>{
+  const handleBulkDelete = async()=>{
+    if(!window.confirm(
+      `Are you sure you want to delete ${selectedIds.length} transcations`
+    )){
+      return 
+    }
+    await deletefn(selectedIds)
+  }
+
+
+useEffect(() => {
+  if (deleted && !deleteLoading) {
+    toast.success("Transactions deleted successfully")
+    setSelectedIds([])
+
+   
+    router.refresh()  
+
 
   }
+}, [deleted, deleteLoading])
+
 
   const handleClearFilters =()=>{
     setRecurringFilter("")
@@ -160,6 +187,7 @@ if (recurringFilter) {
 
   return (
     <div className="space-y-4">
+    {deleteLoading && (<BarLoader className="mt-4" width={'100%'} color="#9333ea"/>)}
     {/* Filters */}
 
     <div className="flex flex-col sm:flex-row gap-4">
@@ -204,54 +232,8 @@ if (recurringFilter) {
               <X className="h-4 w-5" />
             </Button>
           )}
-
-
-
-
-
-
       </div>
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </div>
 
 
       <div className="rounded-md border">
@@ -439,8 +421,8 @@ if (recurringFilter) {
                           Edit
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive">
-                          {/* onClick={() => deletefn([transaction.id])} */}
+                        <DropdownMenuItem className="text-destructive"
+                          onClick={() => deletefn([transaction.id])}>
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
