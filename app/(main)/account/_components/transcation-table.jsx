@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import {
@@ -34,8 +34,20 @@ import {
   Clock,
   MoreHorizontal,
   RefreshCw,
+  Search,
+  Trash,
+  X,
 } from "lucide-react"
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { categoryColors } from "@/data/categories"
+import { Input } from "@/components/ui/input"
 
 const RECURRING_INTERVALS = {
   DAILY: "Daily",
@@ -52,7 +64,64 @@ const TranscationTable = ({ transactions }) => {
     direction: "desc",
   })
 
-  const filteredSortedTransactions = transactions ?? []
+
+  const [searchTerm,setSearchTerm] = useState("")
+  const [typeFilter,setTypeFilter] = useState("")
+  const [recurringFilter,setRecurringFilter]=useState("")
+
+
+
+
+
+  const filteredSortedTransactions = useMemo(()=>{
+    let result = [...transactions]
+
+    if(searchTerm){
+      const searchLower = searchTerm.toLowerCase()
+      result = result.filter((transaction)=> transaction.description?.toLowerCase().includes(searchLower))
+    }
+
+if (recurringFilter) {
+  result = result.filter((transaction) => {
+    if (recurringFilter === "recurring") return transaction.isRecurring === true
+    if (recurringFilter === "onetime") return transaction.isRecurring === false
+    return true
+  })
+}
+
+
+    if(typeFilter){
+      result = result.filter((transaction)=> transaction.type === typeFilter)
+    }
+
+    result.sort((a,b)=>{
+      let comparison =0
+
+      switch(sortConfig.field){
+        case "date":
+          comparison=new Date(a.date) - new Date(b.date)
+          break
+          
+          case "amount":
+            comparison=a.amount - b.amount
+            break
+            
+            case "category":
+              comparison=a.category - b.category
+              break
+
+        default:
+          comparison=0
+      }
+
+      return sortConfig.direction ==="asc" ? comparison: -comparison
+
+    })
+
+
+    return result
+
+  },[transactions,searchTerm,typeFilter,recurringFilter,sortConfig])
 
   const handleSort = (field) => {
     setSortConfig((current) => ({
@@ -78,8 +147,113 @@ const TranscationTable = ({ transactions }) => {
     )
   }
 
+  const handleBulkDelete = ()=>{
+
+  }
+
+  const handleClearFilters =()=>{
+    setRecurringFilter("")
+    setSearchTerm("")
+    setTypeFilter("")
+    setSelectedIds([])
+  }
+
   return (
     <div className="space-y-4">
+    {/* Filters */}
+
+    <div className="flex flex-col sm:flex-row gap-4">
+      <div className="relative flex-1">
+        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground"/>
+        <Input 
+        className='pl-8'
+        placeholder = "Search Transcation"
+        value={searchTerm}
+        onChange = {(e)=>{setSearchTerm(e.target.value)}}
+        
+         />
+
+      </div>
+      <div className="flex gap-2">
+        <Select value={typeFilter} onValueChange ={setTypeFilter}>
+          <SelectTrigger >
+            <SelectValue placeholder="All types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="INCOME">Income</SelectItem>
+            <SelectItem value="EXPENSE">Expense</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select  value={recurringFilter} onValueChange ={setRecurringFilter}>
+          <SelectTrigger >
+            <SelectValue placeholder="All Transcation" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="onetime">OneTime</SelectItem>
+            <SelectItem value="recurring">Recurring</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {selectedIds.length >0 && <div>
+          <Button variant="destructive" size='sm' onClick={handleBulkDelete}> <Trash/> Delete Selected ({selectedIds.length})</Button>
+          </div>}
+
+          {(searchTerm || typeFilter || recurringFilter) && (
+            <Button variant="outline" size="icon" onClick={handleClearFilters} title="Clear Filters">
+              <X className="h-4 w-5" />
+            </Button>
+          )}
+
+
+
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <div className="rounded-md border">
         <Table>
           {/* ================= HEADER ================= */}
