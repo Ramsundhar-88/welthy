@@ -412,17 +412,21 @@ useEffect(() => {
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel
+                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem
                           onClick={() =>
-                            router.push(`/transcation/create?edit=${transaction.id}`)
+                            router.push(
+                              `/transaction/create?edit=${transaction.id}`
+                            )
                           }
                         >
                           Edit
-                        </DropdownMenuLabel>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-destructive"
-                          onClick={() => deletefn([transaction.id])}>
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => deleteFn([transaction.id])}
+                        >
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>

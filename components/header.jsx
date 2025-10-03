@@ -32,7 +32,7 @@ const Header = async() => {
                 </Button>
               </Link>
 
-              <Link href="/transactions/create"
+              <Link href="/transaction/create"
               className='text-gray-700 hover:text-gray-900 flex items-center gap-2'>
                 <Button className="flex items-center space-x-1">
                   <PenBox size={18}/>
