@@ -5,13 +5,14 @@ import { BarLoader } from 'react-spinners'
 import TranscationTable from '../_components/transcation-table'
 import { AccountChart } from '../_components/account-chart'
 
-const  AccountPage =async ({params}) => {
-    const accountData = await getAccountWithTransactions(params.id)
-    if(!accountData){
-        notFound()
-    }
+const AccountPage = async ({ params }) => {
+  const accountId = params?.id; // safe access
+  if (!accountId) return notFound();
 
-    const{transactions,...account}=accountData
+  const accountData = await getAccountWithTransactions(accountId);
+  if (!accountData) return notFound();
+
+  const { transactions, ...account } = accountData;
 
 
 
