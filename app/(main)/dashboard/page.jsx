@@ -1,70 +1,73 @@
 import { getDashboardData, getUserAccounts } from '@/actions/dashboard'
 import CreateAccountDrawer from '@/components/create-account-drawer'
-import { CardContent,Card} from '@/components/ui/card'
+import { CardContent, Card } from '@/components/ui/card'
 import { Plus } from 'lucide-react'
 import AccountCard from './_components/account_card'
 import { BudgetProgress } from './_components/budget-progress'
 import { getCurrentBudget } from '@/actions/budget'
 import { DashboardOverview } from './_components/transaction-overview'
-
 import React, { Suspense } from 'react'
 
-async function DashBoard(){
+async function DashBoard() {
   const accounts = await getUserAccounts()
 
-   const defaultAccount = accounts?.find((account) => account.isDefault);
-    let budgetData = null;
-  if (defaultAccount) {
-    budgetData = await getCurrentBudget(defaultAccount.id);
+  if (!accounts || accounts.length === 0) {
+    // No accounts → Prompt user to create one
+    return (
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <p className="text-lg font-medium">You don't have any accounts yet!</p>
+        <CreateAccountDrawer>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
+              <Plus className="h-10 w-10 mb-2"/>
+              <p className='text-sm font-medium'>Create your first account</p>
+            </CardContent>
+          </Card>
+        </CreateAccountDrawer>
+      </div>
+    )
   }
 
-  const transactions = await getDashboardData(defaultAccount.id)
+  // There are accounts → Show dashboard
+  const defaultAccount = accounts.find((account) => account.isDefault)
+  let budgetData = null
+  if (defaultAccount) {
+    budgetData = await getCurrentBudget(defaultAccount.id)
+  }
+
+  const transactions = await getDashboardData(defaultAccount?.id)
 
   return (
-       <div className="space-y-8">
-
-        
+    <div className="space-y-8">
       {/* Budget Progress */}
-      <BudgetProgress
-        initialBudget={budgetData?.budget}
-        currentExpenses={budgetData?.currentExpenses || 0}
-      />
+      {defaultAccount && (
+        <BudgetProgress
+          initialBudget={budgetData?.budget}
+          currentExpenses={budgetData?.currentExpenses || 0}
+        />
+      )}
 
       <Suspense fallback={"Loading Overview..."}>
         <DashboardOverview
-        accounts={accounts}
-        transactions={transactions||[]}
-        
-        
+          accounts={accounts}
+          transactions={transactions || []}
         />
-
-
-
       </Suspense>
 
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+        <CreateAccountDrawer>
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
+              <Plus className="h-10 w-10 mb-2"/>
+              <p className='text-sm font-medium'>Add new Account</p>
+            </CardContent>
+          </Card>
+        </CreateAccountDrawer>
 
-
-
-
-
-
-
-
-
-
-
-    <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-      <CreateAccountDrawer>
-        <Card className="hover:shadow-md transition-shadwo cursor-pointer">
-          <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
-            <Plus className="h-10 w-10 mb-2"/>
-            <p className='text-sm font-medium'>Add new Account</p>
-          </CardContent>
-        </Card>
-      </CreateAccountDrawer>
-      {accounts.length>0&& accounts?.map((account)=>{
-        return <AccountCard key={account.id} account={account}/>})}
-    </div>    
+        {accounts.map((account) => (
+          <AccountCard key={account.id} account={account} />
+        ))}
+      </div>
     </div>
   )
 }
