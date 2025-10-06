@@ -425,7 +425,7 @@ useEffect(() => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={() => deleteFn([transaction.id])}
+                          onClick={() => deletefn([transaction.id])}
                         >
                           Delete
                         </DropdownMenuItem>

@@ -99,13 +99,13 @@ export function AccountChart({ transactions }) {
           <div className="text-center">
             <p className="text-muted-foreground">Total Income</p>
             <p className="text-lg font-bold text-green-500">
-              ${totals.income.toFixed(2)}
+              ₹{totals.income.toFixed(2)}
             </p>
           </div>
           <div className="text-center">
             <p className="text-muted-foreground">Total Expenses</p>
             <p className="text-lg font-bold text-red-500">
-              ${totals.expense.toFixed(2)}
+              ₹{totals.expense.toFixed(2)}
             </p>
           </div>
           <div className="text-center">
@@ -117,52 +117,91 @@ export function AccountChart({ transactions }) {
                   : "text-red-500"
               }`}
             >
-              ${(totals.income - totals.expense).toFixed(2)}
+              ₹{(totals.income - totals.expense).toFixed(2)}
             </p>
           </div>
         </div>
         <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={filteredData}
-              margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis
-                dataKey="date"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                tickFormatter={(value) => `$${value}`}
-              />
-              <Tooltip
-                formatter={(value) => [`$${value}`, undefined]}
-                contentStyle={{
-                  backgroundColor: "hsl(var(--popover))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "var(--radius)",
-                }}
-              />
-              <Legend />
-              <Bar
-                dataKey="income"
-                name="Income"
-                fill="#22c55e"
-                radius={[4, 4, 0, 0]}
-              />
-              <Bar
-                dataKey="expense"
-                name="Expense"
-                fill="#ef4444"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+         <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={filteredData}
+            margin={{ top: 12, right: 12, left: 0, bottom: 0 }}
+          >
+            {/* Grid */}
+            <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
+
+            {/* X Axis */}
+            <XAxis
+              dataKey="date"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              dy={6}
+            />
+
+            {/* Y Axis */}
+            <YAxis
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => `₹${value.toLocaleString("en-IN")}`}
+              width={60}
+            />
+
+            {/* Tooltip */}
+            <Tooltip
+              formatter={(value) => [`₹${Number(value).toLocaleString("en-IN")}`, undefined]}
+              contentStyle={{
+                backgroundColor: "#1f2937", // dark background
+                border: "1px solid #374151", // slightly lighter border
+                borderRadius: "6px",
+                padding: "6px 10px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              }}
+              itemStyle={{
+                backgroundColor: "hsl(var(--popover))", // bright text
+                fontSize: "0.85rem",
+                margin: 0,
+                lineHeight: 1.2,
+              }}
+              labelStyle={{
+                color: "#f9fafb",
+                fontSize: "0.8rem",
+                margin: 0,
+                lineHeight: 1,
+                fontWeight: 600,
+              }}
+              cursor={{ fill: "rgba(255,255,255,0.1)" }}
+            />
+
+            {/* Legend */}
+            <Legend
+              iconType="circle"
+              wrapperStyle={{
+                paddingTop: 8,
+                fontSize: "0.85rem",
+                color: "hsl(var(--foreground))",
+              }}
+            />
+
+            {/* Bars */}
+            <Bar
+              dataKey="income"
+              name="Income"
+              fill="#10b981" // green for income
+              radius={[6, 6, 0, 0]}
+              barSize={32} // wider bars
+            />
+            <Bar
+              dataKey="expense"
+              name="Expense"
+              fill="#ef4444" // red for expense
+              radius={[6, 6, 0, 0]}
+              barSize={32} // wider bars
+            />
+          </BarChart>
+        </ResponsiveContainer>
+
         </div>
       </CardContent>
     </Card>
