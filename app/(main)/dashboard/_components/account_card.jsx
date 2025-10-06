@@ -4,7 +4,7 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardAction, CardFooter } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 
-import { ArrowDownRight, ArrowUpRight } from 'lucide-react'
+import {  ArrowDownRight, ArrowUpLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { useEffect } from "react";
@@ -74,12 +74,12 @@ const AccountCard = ({account}) => {
         </CardContent>
         <CardFooter className="flex justify-between text-sm text-muted-foreground">
             <div className='mt-1 flex items-center '>
-                <ArrowUpRight className='mr-1 h-4 w-4 text-green-500 '/>
+                < ArrowDownRight className='mr-1 h-4 w-4 text-green-500 '/>
                 Income
 
             </div>
             <div className='flex items-center'>
-                <ArrowDownRight className='mr-1 h-4 w-4 text-red-500'/>
+                <ArrowUpLeft className='mr-1 h-4 w-4 text-red-500'/>
                 Expense
             </div>
             
