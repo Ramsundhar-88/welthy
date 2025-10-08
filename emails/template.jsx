@@ -144,7 +144,7 @@ export default function EmailTemplate({
               <div style={styles.stat}>
                 <Text style={styles.text}>Remaining</Text>
                 <Text style={styles.heading}>
-                  ${data?.budgetAmount - data?.totalExpenses}
+                  ₹{data?.budgetAmount - data?.totalExpenses}
                 </Text>
               </div>
             </Section>
