@@ -17,7 +17,7 @@ export function ReceiptScanner({ onScanComplete }) {
   } = useFetch(scanReceipt);
 
   const handleReceiptScan = async (file) => {
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > 10 * 1024 * 1024) {
       toast.error("File size should be less than 5MB");
       return;
     }
