@@ -74,17 +74,21 @@ export async function createAccount(data){
 }
 
 
-
 export async function getUserAccounts() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
 
+  // ✅ Auto-create user if not found
   if (!user) {
-    throw new Error("User not found");
+    user = await db.user.create({
+      data: {
+        clerkUserId: userId,
+      },
+    });
   }
 
   try {
@@ -100,12 +104,15 @@ export async function getUserAccounts() {
       },
     });
 
-    // Serialize accounts before sending to client
-    const serializedAccounts = accounts.map(serializeTransaction);
+    const serializedAccounts = accounts.map((acc) => ({
+      ...acc,
+      balance: acc.balance?.toNumber?.() ?? acc.balance,
+    }));
 
     return serializedAccounts;
   } catch (error) {
     console.error(error.message);
+    throw new Error("Failed to fetch accounts");
   }
 }
 

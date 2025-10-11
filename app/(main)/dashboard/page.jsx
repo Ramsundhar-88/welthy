@@ -11,16 +11,19 @@ import React, { Suspense } from 'react'
 async function DashBoard() {
   const accounts = await getUserAccounts()
 
+  // ✅ If user has no accounts → Show prompt to create one
   if (!accounts || accounts.length === 0) {
-    // No accounts → Prompt user to create one
     return (
-      <div className="flex flex-col items-center justify-center h-screen space-y-4">
-        <p className="text-lg font-medium">You don't have any accounts yet!</p>
+      <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-6 text-center">
+        <p className="text-xl font-semibold text-muted-foreground">
+          You don’t have any accounts yet!
+        </p>
+
         <CreateAccountDrawer>
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-full pt-5">
-              <Plus className="h-10 w-10 mb-2"/>
-              <p className='text-sm font-medium'>Create your first account</p>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer w-[280px]">
+            <CardContent className="flex flex-col items-center justify-center text-muted-foreground h-40">
+              <Plus className="h-10 w-10 mb-2" />
+              <p className="text-sm font-medium">Create your first account</p>
             </CardContent>
           </Card>
         </CreateAccountDrawer>
@@ -28,7 +31,7 @@ async function DashBoard() {
     )
   }
 
-  // There are accounts → Show dashboard
+  // ✅ If accounts exist → Show dashboard
   const defaultAccount = accounts.find((account) => account.isDefault)
   let budgetData = null
   if (defaultAccount) {
