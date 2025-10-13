@@ -120,7 +120,7 @@ const LandingPage = () => {
             
           </div>
         </div>
-      </section> */}
+      </section> >*/}
 
       {/* CTA Section */}
       <section className="py-32 px-6 bg-gray-900 text-white">
