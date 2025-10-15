@@ -106,7 +106,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="py-8 md:py-12 px-4 md:px-6 border-t border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-          <div className="text-gray-600 text-sm md:text-base">© 2025 Welth</div>
+          <div className="text-gray-600 text-sm md:text-base">© 2025 Welthy</div>
           <div className="flex gap-6 md:gap-8">
             <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm md:text-base">Privacy</a>
             <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors text-sm md:text-base">Terms</a>
