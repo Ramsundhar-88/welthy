@@ -5,6 +5,12 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { Toaster } from "sonner";
 
 const inter = Inter ({  subsets: ["latin"],})
+import { Righteous } from 'next/font/google'
+
+const righteous = Righteous({ 
+  weight: '400',
+  subsets: ['latin'] 
+})
 
 export const metadata = {
   title: "Welthy",
