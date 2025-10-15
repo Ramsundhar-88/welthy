@@ -12,7 +12,7 @@ const Header = async() => {
     <div className='fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-300'>
       <nav className='container mx-auto py-3 md:py-4 px-4 flex justify-between items-center'>
         <Link href="/">
-          <div className="text-2xl md:text-4xl font-semibold tracking-tight cursor-pointer">Welth</div>
+          <div className="font-[Righteous] text-2xl md:text-4xl tracking-tight cursor-pointer">Welthy</div>
         </Link>
 
         <div className="flex items-center">
