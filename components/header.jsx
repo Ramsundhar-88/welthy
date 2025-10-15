@@ -10,51 +10,46 @@ const Header = async() => {
   await checkUser();
   return (
     <div className='fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-300'>
-      <nav className='container mx-auto py-4 px-4 flex justify-between items-center'>
+      <nav className='container mx-auto py-3 md:py-4 px-4 flex justify-between items-center'>
         <Link href="/">
-        <div className="text-4xl font-semibold tracking-tight cursor-pointer">Welth</div>
-
+          <div className="text-2xl md:text-4xl font-semibold tracking-tight cursor-pointer">Welth</div>
         </Link>
 
-        <div>
+        <div className="flex items-center">
           <SignedIn>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 md:space-x-4">
               <Link href="/dashboard" 
-              className='text-gray-700 hover:text-gray-900 flex items-center gap-2'>
-                <Button variant="outline" className="flex items-center space-x-1">
-                  <LayoutDashboard size={18}/>
-                  <span className='hidden md:inline'>Dashboard</span>
+                className='text-gray-700 hover:text-gray-900'>
+                <Button variant="outline" className="flex items-center space-x-1 px-2 md:px-4 h-8 md:h-10">
+                  <LayoutDashboard size={16} className="md:w-[18px] md:h-[18px]"/>
+                  <span className='hidden sm:inline text-sm md:text-base'>Dashboard</span>
                 </Button>
               </Link>
 
               <Link href="/transaction/create"
-              className='text-gray-700 hover:text-gray-900 flex items-center gap-2'>
-                <Button className="flex items-center space-x-1">
-                  <PenBox size={18}/>
-                  <span className='hidden md:inline'>Add Transcation</span>
+                className='text-gray-700 hover:text-gray-900'>
+                <Button className="flex items-center space-x-1 px-2 md:px-4 h-8 md:h-10">
+                  <PenBox size={16} className="md:w-[18px] md:h-[18px]"/>
+                  <span className='hidden sm:inline text-sm md:text-base'>Add Transaction</span>
                 </Button>
               </Link>
 
-
-
-
               <UserButton appearance={{elements:{
-                avatarBox: 'w-10 h-10',
+                avatarBox: 'w-8 h-8 md:w-10 md:h-10',
               }}}/>
             </div>
           </SignedIn>
-        <SignedOut>
-          <Link href="/sign-in">
-            <Button variant="outline" className="mr-4  cursor-pointer">Login</Button>
-          </Link>
-        </SignedOut>
-                <SignedOut>
-          <Link href="/sign-up">
-            <Button variant="secondary" className="mr-4 cursor-pointer">Sign-up</Button>
-          </Link>
-        </SignedOut>
-
-
+          
+          <SignedOut>
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <Link href="/sign-in">
+                <Button variant="outline" className="cursor-pointer h-8 md:h-10 px-3 md:px-4 text-sm md:text-base">Login</Button>
+              </Link>
+              <Link href="/sign-up">
+                <Button variant="secondary" className="cursor-pointer h-8 md:h-10 px-3 md:px-4 text-sm md:text-base">Sign-up</Button>
+              </Link>
+            </div>
+          </SignedOut>
         </div>
       </nav>
     </div>
