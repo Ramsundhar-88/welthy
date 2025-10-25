@@ -18,7 +18,8 @@ const AccountPage = async ({ params }) => {
 
 
   return (
-    <div className='space-y-8 px -5 '>
+    <div className="space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
+
         <div className='flex gap-4 items-end justify-between'>
 
         <div>
