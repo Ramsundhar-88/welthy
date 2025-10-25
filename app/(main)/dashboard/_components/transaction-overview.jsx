@@ -1,5 +1,8 @@
 "use client";
 
+
+import { categoryColors } from "@/data/categories"
+
 import { useState, useEffect } from "react";
 import {
   PieChart,
@@ -22,15 +25,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-const COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#96CEB4",
-  "#FFC107",
-  "#D4A5A5",
-  "#9FA8DA",
-];
+const COLORS = ["#0EA5E9", "#FACC15", "#F97316", "#10B981", "#6366F1"];
+
 
 export function DashboardOverview({ accounts, transactions }) {
   const [selectedAccountId, setSelectedAccountId] = useState(
@@ -217,10 +213,11 @@ export function DashboardOverview({ accounts, transactions }) {
                     labelLine={chartConfig.showLabels}
                   >
                     {pieChartData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
+
+
+
+                <Cell key={index} fill={categoryColors[entry.name.toLowerCase().replace(/\s+/g, '-')] ?? "#E5E7EB"} />
+
                     ))}
                   </Pie>
                   <Tooltip
