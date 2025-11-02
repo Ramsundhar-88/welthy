@@ -30,7 +30,7 @@ const PREVIEW_DATA = {
       insights: [
         "Your housing expenses are 43% of your total spending - consider reviewing your housing costs.",
         "Great job keeping entertainment expenses under control this month!",
-        "Setting up automatic savings could help you save 20% more of your income.",
+        "Setting up automatic saving could help you save 20% more of your income.",
       ],
     },
   },
