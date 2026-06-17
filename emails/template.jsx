@@ -30,7 +30,7 @@ const PREVIEW_DATA = {
       insights: [
         "Your housing expenses are 43% of your total spending - consider reviewing your housing costs.",
         "Great job keeping entertainment expenses under control this month!",
-        "Setting up automatic savings could help you save 20% more of your income.",
+        "Setting up automatic saving could help you save 20% more of your income.",
       ],
     },
   },
@@ -77,7 +77,7 @@ export default function EmailTemplate({
               <div style={styles.stat}>
                 <Text style={styles.text}>Net</Text>
                 <Text style={styles.heading}>
-                  ${data?.stats.totalIncome - data?.stats.totalExpenses}
+                  ₹{data?.stats.totalIncome - data?.stats.totalExpenses}
                 </Text>
               </div>
             </Section>
@@ -90,7 +90,7 @@ export default function EmailTemplate({
                   ([category, amount]) => (
                     <div key={category} style={styles.row}>
                       <Text style={styles.text}>{category}</Text>
-                      <Text style={styles.text}>₹{amount}</Text>
+                      <Text style={styles.text}> ₹{amount}</Text>
                     </div>
                   )
                 )}
